@@ -1,0 +1,45 @@
+
+<div class="box">
+
+    <h1>Greeting</h1>
+<form action="/" method="POST">
+<input type="text" name="greetName" value="" placeholder="enter your name" class="greetText" onkeypress="return (event.charCode > 64 && 
+event.charCode < 91) || (event.charCode > 96 && event.charCode < 123)">
+    
+
+
+  <div class="radio">
+
+    <input type="radio" name="greetRadioBtn" class="greetRadioOne" value="English">
+    <span class="label-body">English</span>
+
+    <input type="radio" name="greetRadioBtn" class="greetRadioTwo" value="Afrikaans">
+    <span class="label-body">Afrikaans</span>
+
+    <input type="radio" name="greetRadioBtn" class="greetRadioThree" value="IsiXhosa">
+    <span class="label-body">isiXhosa</span>
+
+</div>
+
+<h2>Counter <span class="myCounter">{{counter}}</span></h2>
+
+<div class="washa"><button class="button greetBtn" on type="submit" name="button">Greet Me</button>
+     <button class="button resetBtn" on type="submit" name="button">Reset</button>
+
+      <a href="/greeted">Greet Users</a>
+</div>
+
+<div class="greetMessage">
+    <p>{{greet}}</p>
+</div>
+<div class="errorMessage"></div>
+</div>
+
+
+  
+ 
+    
+
+
+</form>
+

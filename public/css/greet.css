@@ -1,0 +1,70 @@
+body {
+
+     position: relative;
+     margin: 0 auto;
+     padding: 0 0px;
+     box-sizing: border-box;
+     max-width: 960px;
+     width: 100%;
+     background-color: rgb(145, 131, 131);
+
+
+
+
+}
+.box {
+    padding: 0.75em;
+    border-radius: 0.5em;
+    border: 3px solid #ddd;
+    border-color: aqua;
+    height: auto;
+    margin-bottom: 1em;
+}
+
+input[type=text]{
+    min-height: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    
+}
+
+h1 {
+    font-style: italic
+
+    
+
+}
+
+.button {
+     
+    background-color: aqua;
+    font-size: 20px;
+    background-size: 30px;
+    box-sizing: border-box
+
+    
+}
+
+.radio {
+
+padding: 20px;
+
+}
+
+.greetMessage {
+
+    font-size: 30px;
+    background-color: blueviolet;
+}
+
+
+.button:hover {
+
+    color: black;
+    background-color: white;
+}
+
+.washa a {
+
+    font-size: 20px;
+}
