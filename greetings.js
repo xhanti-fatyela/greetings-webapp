@@ -9,7 +9,7 @@ module.exports = function greetings() {
             objMap[lowerObj] = 0;
         }
 
-        
+        objMap[lowerObj]++
     }
 
     function langMessages(name, lang) {
@@ -39,12 +39,25 @@ module.exports = function greetings() {
         objMap = {}
     }
 
+    function individualCounter(name){
+       
+        for (const key in objMap) {
+            if (key === name) {
+                var element = objMap[key];
+                
+            }
+        }
+        
+        return element
+    }
+
     return {
         setName,
         getNames,
         counter,
         langMessages,
         clearObj,
+        individualCounter
 
     }
 }

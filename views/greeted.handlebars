@@ -9,9 +9,9 @@
 
     <h2>Names</h2>
 
-    <ul>{{#each name}}<a href="/greeted">
-            <li>{{@this.key}}</li>
-        </a>{{/each}}
+    <ul>{{#each name}}
+           <a href="/counter/{{@this.key}}"> <li>{{@this.key}}</li></a>
+        {{/each}}
     </ul>
 
 </div>
