@@ -6,6 +6,13 @@ const session = require('express-session');
 const greetings = require('./greetings')
 const app = express();
 
+const pg = require("pg");
+const Pool = pg.Pool;
+const connectionString = process.env.DATABASE_URL || 'postgresql://coder:pg123@localhost:3015/greetings-webapp';
+const pool = new Pool({
+  connectionString
+});
+
 const greetFunction = greetings()
 
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
@@ -46,15 +53,19 @@ app.get('/addFlash', function (req, res) {
   res.redirect('/');
 });
 
-app.post('/', function (req, res) {
+app.post('/', async function (req, res) {
 
   const greetName = req.body.greetName
+
+  console.log(greetName)
   const greetRadio = req.body.greetRadioBtn
-  const greetCounter = req.body.myCounter
+  // const greetCounter = req.body.myCounter
 
   const greetLang = greetFunction.langMessages(greetName, greetRadio)
-  greetFunction.setName(greetName)
-  const greetCount = greetFunction.counter()
+//  await greetFunction.setName(greetName)
+   await greetFunction.selectNames(greetName)
+  const greetCount =  await greetFunction.counter()
+  
 
   if(greetName === '' && greetRadio === undefined){
      

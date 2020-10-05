@@ -1,8 +1,37 @@
-module.exports = function greetings() {
+module.exports = function greetings(pool) {
 
     var objMap = {};
 
-    function setName(name) {
+    async function selectNames(name) {
+
+        const INSERT_QUERY =  await pool.query('insert into greetedusers (name, persons_count) values ($1, $2)', [name, 1]);
+    //   await pool.query(INSERT_QUERY, [name , 1]);
+        
+
+    }
+
+
+    // async function nameQuery(name) {
+    //     var INSERT_QUERY = "insert into greetedusers (name) values($1)"
+    //     await pool.query(INSERT_QUERY, [name])
+    // }
+
+    async function counterQuery(username) {
+        const SELECT_QUERY = 'Select name from users where name=$1'
+        const UPDATE_QUERY = 'UPDATE users set greetedusers=greetedUsers+1  where name=$1 ';
+        const user = await pool.query(SELECT_QUERY, [username])
+        if (user.rows.length > 0) {
+            await pool.query(UPDATE_QUERY, [username])
+        }
+        else {
+            await addEntry(username)
+        }
+
+    }
+
+    
+
+    async function setName(name) {
         var lowerObj = name.toLowerCase()
 
         if (objMap[lowerObj] === undefined) {
@@ -12,7 +41,10 @@ module.exports = function greetings() {
         objMap[lowerObj]++
     }
 
-    function langMessages(name, lang) {
+    async function langMessages(name, lang) {
+
+       
+
         if (lang === "IsiXhosa") {
             return "Molo " + name + "!"
         }
@@ -24,22 +56,23 @@ module.exports = function greetings() {
         }
     }
 
-    function getNames() {
+    async function getNames() {
         return objMap;
     }
 
-    function counter() {
+    async function counter() {
+
         return Object.keys(objMap).length
     }
 
 
 
 
-    function clearObj() {
+    async function clearObj() {
         objMap = {}
     }
 
-    function individualCounter(name){
+    async function individualCounter(name){
        
         for (const key in objMap) {
             if (key === name) {
@@ -57,7 +90,10 @@ module.exports = function greetings() {
         counter,
         langMessages,
         clearObj,
-        individualCounter
+        individualCounter,
+        selectNames,
+        // nameQuery,
+        counterQuery
 
     }
 }
