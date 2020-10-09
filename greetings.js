@@ -1,50 +1,49 @@
 module.exports = function greetings(pool) {
 
-    var objMap = {};
 
-    async function selectNames(name) {
+    async function addName(name) {
 
-        const INSERT_QUERY =  await pool.query('insert into greetedusers (name, persons_count) values ($1, $2)', [name, 1]);
-    //   await pool.query(INSERT_QUERY, [name , 1]);
-        
+        var setNames = await pool.query('SELECT names FROM greetedusers WHERE names = $1', [name]);
+
+        if (setNames.rowCount === 0) {
+            await pool.query('INSERT INTO greetedusers (names, persons_count) values ($1, $2)', [name, 1]);
+
+        } else {
+            await pool.query('UPDATE greetedusers names SET persons_count = persons_count + 1 WHERE names = $1', [name]);
+        }
+
+
+
 
     }
 
 
-    // async function nameQuery(name) {
-    //     var INSERT_QUERY = "insert into greetedusers (name) values($1)"
-    //     await pool.query(INSERT_QUERY, [name])
+
+    async function nameCounter() {
+        const count = await pool.query('select count (*) from greetedusers')
+        return count.rows[0]["count"]
+    }
+
+    async function individualCounter(name) {
+
+        var results = await pool.query('select persons_count from greetedusers where names=$1', [name])
+        return results.rows[0]["persons_count"]
+    }
+
+
+
+
+    // async function setName(name) {
+    //     var lowerObj = name.toLowerCase()
+
+    //     if (objMap[lowerObj] === undefined) {
+    //         objMap[lowerObj] = 0;
+    //     }
+
+    //     objMap[lowerObj]++
     // }
 
-    async function counterQuery(username) {
-        const SELECT_QUERY = 'Select name from users where name=$1'
-        const UPDATE_QUERY = 'UPDATE users set greetedusers=greetedUsers+1  where name=$1 ';
-        const user = await pool.query(SELECT_QUERY, [username])
-        if (user.rows.length > 0) {
-            await pool.query(UPDATE_QUERY, [username])
-        }
-        else {
-            await addEntry(username)
-        }
-
-    }
-
-    
-
-    async function setName(name) {
-        var lowerObj = name.toLowerCase()
-
-        if (objMap[lowerObj] === undefined) {
-            objMap[lowerObj] = 0;
-        }
-
-        objMap[lowerObj]++
-    }
-
-    async function langMessages(name, lang) {
-
-       
-
+    function langMessages(name, lang) {
         if (lang === "IsiXhosa") {
             return "Molo " + name + "!"
         }
@@ -57,43 +56,32 @@ module.exports = function greetings(pool) {
     }
 
     async function getNames() {
-        return objMap;
+        var eachName = await pool.query(`select names from greetedusers`)
+        return eachName.rows
     }
 
-    async function counter() {
+    // async function counter() {
 
-        return Object.keys(objMap).length
+    //     return Object.keys(objMap).length
+    // }
+
+
+
+
+    async function clearData() {
+
+    await pool.query(`delete from greetedusers`)
+
     }
 
-
-
-
-    async function clearObj() {
-        objMap = {}
-    }
-
-    async function individualCounter(name){
-       
-        for (const key in objMap) {
-            if (key === name) {
-                var element = objMap[key];
-                
-            }
-        }
-        
-        return element
-    }
 
     return {
-        setName,
-        getNames,
-        counter,
+        getNames, 
         langMessages,
-        clearObj,
+        clearData,
         individualCounter,
-        selectNames,
-        // nameQuery,
-        counterQuery
+        addName,
+        nameCounter
 
     }
 }

@@ -5,97 +5,71 @@ let greetings = require('../greetings');
 let greetingsFac = greetings()
 
 
+const pg = require("pg");
+const Pool = pg.Pool;
+
+// we are using a special test database for the tests
+const connectionString = process.env.DATABASE_URL || 'postgresql://codex:pg123@localhost:5432/greetings_test';
+
+const pool = new Pool({
+    connectionString
+});
 
 
-describe("the Greetins Exercise", function () {
+let greetingsEX = greetings(pool)
 
+describe('The Greetings App Factory Function', function () {
 
-    it('greetings', function () {
-
-        let greetingsEX = greetings()
-
-        greetingsFac.langMessages("Xhanti", "English")
-        greetingsFac.counter()
-        greetingsEX.setName("Xhanti")
-
-
-        assert.equal(greetingsEX.langMessages("Xhanti", "English", "!"), "Hello Xhanti!");
-        assert.equal(1, greetingsEX.counter())
-
-
-
+    beforeEach(async function () {
+        // clean the tables before each test run
+        await pool.query("delete from greetedusers;");
     });
 
-    it("should greet with name entered & selected 'IsiXhosa'", function () {
 
-        let greetingsEX = greetings()
-
-        greetingsEX.langMessages("Lona", "IsiXhosa")
-
-        assert.equal(greetingsEX.langMessages("Lona", "IsiXhosa", "!"), "Molo Lona!")
+    it("the langMessages() function should return a greeting message given a name and a language", function () {
 
 
-    });
+        var actual = greetingsEX.langMessages("Lona", "IsiXhosa");
+        var expected = "Molo Lona!";
 
-    it("should greet with name entered & selected 'English'", function () {
-
-        let greetingsEX = greetings()
-
-        greetingsEX.langMessages("Andre", "English")
-
-        assert.equal(greetingsEX.langMessages("Andre", "English", "!"), "Hello Andre!")
-
-
-
-    });
-
-    it("should greet with name entered & selected 'Afrikaans'", function () {
-
-        let greetingsEX = greetings()
-
-        greetingsEX.langMessages("Lona", "Afrikaans")
-
-        assert.equal(greetingsEX.langMessages("Lona", "Afrikaans", "!"), "Halo Lona!")
-
-
-    });
-
-    it("counter should return the number of names entered", function () {
-
-        let greetingsEX = greetings()
-
-        greetingsEX.langMessages("Lona", "Afrikaans")
-        greetingsEX.langMessages("Thimna", "English")
-        greetingsEX.setName("Lona")
-        greetingsEX.setName("Thimna")
-        greetingsEX.counter("Lona", "Thimna")
-
-        assert.equal(greetingsEX.counter(), 2)
-
+        assert.equal(actual, expected)
 
 
     });
 
 
 
+    it('the addName() function should add a name to the greetedusers table ', async function () {
 
-    it("conter should not increase the number name is duplicated ", function () {
- 
-        let greetingsEX = greetings()
-        
-    
-        greetingsEX.setName("Lona")
-        greetingsEX.setName("Lona")
-        greetingsEX.counter("Lona", "Lona")
-    
-        greetingsEX.langMessages("lona", "English")
-        greetingsEX.langMessages("lona", "English")
-    
-        assert.equal(greetingsEX.counter() , 1)
-    
-    
-        
-        
-    
+        var name = "Xhanti";
+
+        await greetingsEX.addName(name);
+
+        var actual = await greetingsEX.individualCounter(name);
+        var expected = 1;
+
+        assert.equal(actual, expected);
+
     });
+
+
+    it('the nameCounter() function should add a name to the greetedusers table ', async function () {
+
+
+        var actual = await greetingsEX.nameCounter();
+        var expected = 0;
+
+
+
+        assert.equal(actual, expected);
+
+    });
+
+
+
+
+
+    after(function () {
+        pool.end();
+    })
 });

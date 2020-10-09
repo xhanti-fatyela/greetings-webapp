@@ -3,7 +3,7 @@
 
     <h1>Greeting</h1>
 <form action="/" method="POST">
-<input type="text" name="greetName" value="" placeholder="enter your name" class="greetText" onkeypress="return (event.charCode > 64 && 
+<input type="text" name="greetName" value="" placeholder="enter your name" required class="greetText" onkeypress="return (event.charCode > 64 && 
 event.charCode < 91) || (event.charCode > 96 && event.charCode < 123)">
     
 
@@ -27,7 +27,7 @@ event.charCode < 91) || (event.charCode > 96 && event.charCode < 123)">
 <h2>Counter <span class="myCounter">{{counter}}</span></h2>
 
 <div class="washa"><button class="button greetBtn" on type="submit" name="button">Greet Me</button>
-     <button class="button resetBtn" on type="submit" name="button">Reset</button>
+     <button class="button resetBtn" on type="submit" name="button"><a href="/clear"> Reset</a></button>
 
       <a href="/greeted">Greet Users</a>
 </div>

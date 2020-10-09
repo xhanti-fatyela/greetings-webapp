@@ -8,12 +8,15 @@ const app = express();
 
 const pg = require("pg");
 const Pool = pg.Pool;
-const connectionString = process.env.DATABASE_URL || 'postgresql://coder:pg123@localhost:3015/greetings-webapp';
-const pool = new Pool({
-  connectionString
-});
 
-const greetFunction = greetings()
+const connectionString = process.env.DATABASE_URL || 'postgresql://codex:pg123@localhost:5432/greetings';
+
+const pool = new Pool ({
+
+  connectionString
+
+})
+const greetFunction = greetings(pool)
 
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
 app.set('view engine', 'handlebars');
@@ -42,12 +45,7 @@ app.get('/', function (req, res) {
 
 });
 
-// app.get('/', function (req, res) {
-//   req.flash('info', 'Welcome');
-//   res.render('index', {
-//     title: 'Home'
-//   })
-// });
+
 app.get('/addFlash', function (req, res) {
   req.flash('info', 'Flash Message Added');
   res.redirect('/');
@@ -55,30 +53,28 @@ app.get('/addFlash', function (req, res) {
 
 app.post('/', async function (req, res) {
 
-  const greetName = req.body.greetName
+   const greetName = req.body.greetName
 
   console.log(greetName)
   const greetRadio = req.body.greetRadioBtn
-  // const greetCounter = req.body.myCounter
 
-  const greetLang = greetFunction.langMessages(greetName, greetRadio)
-//  await greetFunction.setName(greetName)
-   await greetFunction.selectNames(greetName)
-  const greetCount =  await greetFunction.counter()
-  
+    await greetFunction.addName(greetName)
+    const greetLang = await greetFunction.langMessages(greetName, greetRadio)
+    const nameCounter = await greetFunction.nameCounter()
 
-  if(greetName === '' && greetRadio === undefined){
-     
-     req.flash('error', 'please enter name and select language')
+
+  if (greetName === '' && greetRadio === undefined) {
+
+    req.flash('error', 'please enter name and select language')
 
   }
 
-  else if (greetName === ''){
+  else if (greetName === '') {
 
     req.flash('error', 'please enter name')
   }
 
-  else if (greetRadio === undefined){
+  else if (greetRadio === undefined) {
 
     req.flash('error', 'please select language')
   }
@@ -86,36 +82,43 @@ app.post('/', async function (req, res) {
   res.render('index', {
 
     greet: greetLang,
-    counter: greetCount
+    counter: nameCounter
 
   });
-
-});
-
-app.get('/greeted', function (req, res) {
-
-  var names = greetFunction.getNames();
-  for (const list in names) {
-
-  }
-
-  res.render("greeted", { name: names })
+    
 
 
 });
 
-app.get('/counter/:username', function (req, res) {
+app.get('/greeted', async function (req, res) {
+
+  var eachUserNames = await greetFunction.getNames();
+
+    res.render("greeted", {
+        names: eachUserNames
+    });
+});
+
+
+app.get('/counter/:username',async function (req, res) {
 
   var username = req.params.username
 
-  const indiCounter = greetFunction.individualCounter(username)
+  const indiCounter = await greetFunction.individualCounter(username)
+
 
   res.render('counter', { username, indiCounter })
 });
 
+app.get('/clear', async function (req, res) {
+
+  await greetFunction.clearData();
+ 
+
+  res.redirect('/')
 
 
-
+});
 
 
 
