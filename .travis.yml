@@ -2,7 +2,7 @@ langauge: node_js
 
 env:
 
- - DATABASE_URL || 'postgresql://codex:pg123@localhost:5432/greetings_test';
+ - DATABASE_URL='postgresql://codex:pg123@localhost:5432/greetings_test';
 
 node_js:
    - 12
@@ -11,6 +11,7 @@ before_script:
 
    - psql -c create database greetings_test; -U postgres
    - psql -U postgres -d greetings_test -a -f table.sql
+   
 
 services:
  - postgresql    
