@@ -2,6 +2,9 @@ module.exports = function greetings(pool) {
 
 
     async function addName(name) {
+        
+        name = name.toLowerCase();
+        name = name.toUpperCase().charAt(0) + name.slice(1)
 
         var setNames = await pool.query('SELECT names FROM greetedusers WHERE names = $1', [name]);
 
@@ -44,6 +47,9 @@ module.exports = function greetings(pool) {
     // }
 
     function langMessages(name, lang) {
+        name = name.toLowerCase();
+        name = name.toUpperCase().charAt(0) + name.slice(1)
+
         if (lang === "IsiXhosa") {
             return "Molo " + name + "!"
         }
@@ -70,13 +76,13 @@ module.exports = function greetings(pool) {
 
     async function clearData() {
 
-    await pool.query(`delete from greetedusers`)
+        await pool.query(`delete from greetedusers`)
 
     }
 
 
     return {
-        getNames, 
+        getNames,
         langMessages,
         clearData,
         individualCounter,
