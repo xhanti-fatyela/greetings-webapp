@@ -11,7 +11,7 @@ const Pool = pg.Pool;
 
 const connectionString = process.env.DATABASE_URL || 'postgresql://codex:pg123@localhost:5432/greetings';
 
-const pool = new Pool ({
+const pool = new Pool({
 
   connectionString
 
@@ -39,7 +39,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
 app.use(bodyParser.json())
 
-app.get('/',async function (req, res) {
+app.get('/', async function (req, res) {
 
   const nameCounter = await greetFunction.nameCounter()
   res.render('index', {
@@ -52,7 +52,7 @@ app.get('/',async function (req, res) {
 
 app.get('/addFlash', function (req, res) {
   req.flash('info', 'Flash Message Added');
-  res.redirect('/' , {
+  res.redirect('/', {
 
 
   });
@@ -60,40 +60,48 @@ app.get('/addFlash', function (req, res) {
 
 app.post('/', async function (req, res) {
 
-   const greetName = req.body.greetName
+  const greetName = req.body.greetName
 
-  console.log(greetName)
   const greetRadio = req.body.greetRadioBtn
-
-    await greetFunction.addName(greetName)
-    const greetLang = await greetFunction.langMessages(greetName, greetRadio)
-    const nameCounter = await greetFunction.nameCounter()
-
 
   if (greetName === '' && greetRadio === undefined) {
 
     req.flash('error', 'please enter name and select language')
+    // return
 
   }
 
   else if (greetName === '') {
 
     req.flash('error', 'please enter name')
+    // return
   }
 
   else if (greetRadio === undefined) {
 
     req.flash('error', 'please select language')
-  }
+    // return
+  } 
 
+  else {
+
+  
+
+  const greetLang = await greetFunction.langMessages(greetName, greetRadio)
+
+  await greetFunction.addName(greetName)
+  
+  const nameCounter = await greetFunction.nameCounter()
   res.render('index', {
 
     greet: greetLang,
     counter: nameCounter
 
   });
-    
-
+  return
+}
+res.render('index');
+  // console.log(greetLang);
 
 });
 
@@ -101,13 +109,13 @@ app.get('/greeted', async function (req, res) {
 
   var eachUserNames = await greetFunction.getNames();
 
-    res.render("greeted", {
-        names: eachUserNames
-    });
+  res.render("greeted", {
+    names: eachUserNames
+  });
 });
 
 
-app.get('/counter/:username',async function (req, res) {
+app.get('/counter/:username', async function (req, res) {
 
   var username = req.params.username
 
@@ -120,7 +128,7 @@ app.get('/counter/:username',async function (req, res) {
 app.get('/clear', async function (req, res) {
 
   await greetFunction.clearData();
- 
+
 
   res.redirect('/')
 

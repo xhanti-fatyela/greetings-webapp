@@ -37,6 +37,28 @@ describe('The Greetings App Factory Function', function () {
 
     });
 
+    it("the langMessages() function should return a greeting message given a name and a language", function () {
+
+
+        var actual = greetingsEX.langMessages("Thimna", "English");
+        var expected = "Hello Thimna!";
+
+        assert.equal(actual, expected)
+
+
+    });
+
+    it("the langMessages() function should return a greeting message given a name and a language", function () {
+
+
+        var actual = greetingsEX.langMessages("Lunga", "Afrikaans");
+        var expected = "Halo Lunga!";
+
+        assert.equal(actual, expected)
+
+
+    });
+
 
 
     it('the addName() function should add a name to the greetedusers table ', async function () {
@@ -65,6 +87,18 @@ describe('The Greetings App Factory Function', function () {
 
     });
 
+    it('the indiCounter() function should add a name to the greetedusers table ', async function () {
+
+        var name = "Namhla";
+
+        await greetingsEX.addName(name);
+
+        var actual = await greetingsEX.individualCounter(name);
+        var expected = 1;
+
+        assert.equal(actual, expected);
+
+    });
 
 
 
