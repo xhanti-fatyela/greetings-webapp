@@ -39,16 +39,23 @@ app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
 app.use(bodyParser.json())
 
-app.get('/', function (req, res) {
+app.get('/',async function (req, res) {
 
-  res.render('index');
+  const nameCounter = await greetFunction.nameCounter()
+  res.render('index', {
+
+    counter: nameCounter
+  });
 
 });
 
 
 app.get('/addFlash', function (req, res) {
   req.flash('info', 'Flash Message Added');
-  res.redirect('/');
+  res.redirect('/' , {
+
+
+  });
 });
 
 app.post('/', async function (req, res) {

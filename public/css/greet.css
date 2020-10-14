@@ -4,7 +4,7 @@ body {
      margin: 0 auto;
      padding: 0 0px;
      box-sizing: border-box;
-     max-width: 960px;
+     
      width: 100%;
      background-color: rgb(145, 131, 131);
 
@@ -13,12 +13,17 @@ body {
 
 }
 .box {
-    padding: 0.75em;
+    padding: 2em;
     border-radius: 0.5em;
     border: 3px solid #ddd;
     border-color: aqua;
     height: auto;
     margin-bottom: 1em;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: fit-content;
+    margin-top: 3em;
+    
 }
 
 input[type=text]{
@@ -47,14 +52,14 @@ h1 {
 
 .radio {
 
-padding: 20px;
+margin-top: 2em;
 
 }
 
 .greetMessage {
 
     font-size: 30px;
-    background-color: blueviolet;
+  
 }
 
 
@@ -71,4 +76,9 @@ padding: 20px;
 
 .error {
     color: red;
+}
+
+a {
+    text-decoration: none;
+    color: black;
 }
