@@ -2,21 +2,21 @@ module.exports = function greetings(pool) {
 
 
     async function addName(name) {
-        
+
         name = name.toLowerCase();
         name = name.toUpperCase().charAt(0) + name.slice(1)
-if(name){
-        var setNames = await pool.query('SELECT names FROM greetedusers WHERE names = $1', [name]);
+        if (name) {
+            var setNames = await pool.query('SELECT names FROM greetedusers WHERE names = $1', [name]);
 
-        if (setNames.rowCount === 0) {
-            await pool.query('INSERT INTO greetedusers (names, persons_count) values ($1, $2)', [name, 1]);
+            if (setNames.rowCount === 0) {
+                await pool.query('INSERT INTO greetedusers (names, persons_count) values ($1, $2)', [name, 1]);
 
-        } else {
-            await pool.query('UPDATE greetedusers names SET persons_count = persons_count + 1 WHERE names = $1', [name]);
+            } else {
+                await pool.query('UPDATE greetedusers names SET persons_count = persons_count + 1 WHERE names = $1', [name]);
+            }
+
+
         }
-
-
-    }
 
     }
 
@@ -49,18 +49,18 @@ if(name){
     function langMessages(name, lang) {
         name = name.toLowerCase();
         name = name.toUpperCase().charAt(0) + name.slice(1)
-if(lang){
-        if (lang === "IsiXhosa") {
-            return "Molo " + name + "!"
-        }
-        if (lang === "English") {
-            return "Hello " + name + "!"
-        }
-        if (lang === "Afrikaans") {
-            return "Halo " + name + "!"
+        if (lang) {
+            if (lang === "IsiXhosa") {
+                return "Molo " + name + "!"
+            }
+            if (lang === "English") {
+                return "Hello " + name + "!"
+            }
+            if (lang === "Afrikaans") {
+                return "Halo " + name + "!"
+            }
         }
     }
-}
 
     async function getNames() {
         var eachName = await pool.query(`select names from greetedusers`)
