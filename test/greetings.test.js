@@ -100,6 +100,47 @@ describe('The Greetings App Factory Function', function () {
 
     });
 
+    it('the getNames() function should select names from the greetedusers table ', async function () {
+
+        var name = "Lutho";
+
+        await greetingsEX.addName(name);
+
+        var actual = await greetingsEX.getNames(name);
+        var expected = [
+            {
+              names: 'Lutho'
+            }
+          ];
+
+        assert.deepEqual(actual, expected);
+
+    });
+
+    it('the getNames() function should select names from the greetedusers table ', async function () {
+
+        await greetingsEX.addName("Timmy");
+        await greetingsEX.addName("vonny");
+        await greetingsEX.addName("themba");
+
+        // await greetingsEX.getNames();
+        var expected =    [
+            {
+              "names": "Timmy"
+            },
+           {
+             "names": "Vonny"
+           },
+           {
+             "names": "Themba"
+           }
+          ]
+   
+
+        assert.deepEqual(await greetingsEX.getNames(), expected);
+
+    });
+
 
 
 

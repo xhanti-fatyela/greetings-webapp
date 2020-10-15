@@ -12,7 +12,7 @@ body {
 
 
 }
-.box {
+.box,.counter, .greeted {
     padding: 2em;
     border-radius: 0.5em;
     border: 3px solid #ddd;
@@ -82,3 +82,5 @@ a {
     text-decoration: none;
     color: black;
 }
+
+

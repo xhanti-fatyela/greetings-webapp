@@ -35,17 +35,6 @@ module.exports = function greetings(pool) {
 
 
 
-
-    // async function setName(name) {
-    //     var lowerObj = name.toLowerCase()
-
-    //     if (objMap[lowerObj] === undefined) {
-    //         objMap[lowerObj] = 0;
-    //     }
-
-    //     objMap[lowerObj]++
-    // }
-
     function langMessages(name, lang) {
         name = name.toLowerCase();
         name = name.toUpperCase().charAt(0) + name.slice(1)
@@ -66,13 +55,6 @@ module.exports = function greetings(pool) {
         var eachName = await pool.query(`select names from greetedusers`)
         return eachName.rows
     }
-
-    // async function counter() {
-
-    //     return Object.keys(objMap).length
-    // }
-
-
 
 
     async function clearData() {

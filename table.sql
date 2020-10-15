@@ -4,7 +4,7 @@ create table greetedusers(
     persons_count int not null
 );
 
--- my_products
+-- greetings
 -- password: pg123
 -- codex
 
