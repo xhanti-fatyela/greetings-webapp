@@ -18,7 +18,13 @@ module.exports = function greetRoutes() {
 
   async function homeRoute(req, res) {
 
-    res.render('index');
+    const nameCounter = await greetFunction.nameCounter()
+
+    res.render('index', {
+      
+      counter: nameCounter
+
+    });
     
   }
 
